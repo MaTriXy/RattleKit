@@ -1,0 +1,48 @@
+name: PR Terms
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR acknowledgement and DCO sign-off
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const phrase = "I have read and agree to the RattleKit Contribution Terms."
+            const body = context.payload.pull_request.body || ""
+
+            if (!body.includes(phrase)) {
+              core.setFailed(`PR body must include the exact acknowledgement phrase: "${phrase}"`)
+              return
+            }
+
+            const commits = await github.paginate(
+              github.rest.pulls.listCommits,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                per_page: 100,
+              }
+            )
+
+            const missingSignoff = commits.filter(
+              (commit) => !commit.commit.message.includes("Signed-off-by:")
+            )
+
+            if (missingSignoff.length > 0) {
+              const labels = missingSignoff.map(
+                (commit) => `${commit.sha.slice(0, 7)} ${commit.commit.message.split("\n")[0]}`
+              )
+              core.setFailed(
+                `Every commit must be signed off with Signed-off-by:. Missing on: ${labels.join(", ")}`
+              )
+            }
