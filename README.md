@@ -15,11 +15,6 @@ RattleKit showcase video for the SwiftUI and Jetpack Compose libraries:
 
 https://github.com/user-attachments/assets/313002eb-2ce0-4fd0-a667-5527b5e2c152
 
-Additional demo assets:
-
-- Landscape `16:9`: [README video](https://github.com/user-attachments/assets/313002eb-2ce0-4fd0-a667-5527b5e2c152), [repo MP4](./media/rattlekit-showcase-16x9.mp4), [GIF preview](./media/rattlekit-showcase-16x9-preview.gif), and [frame](./media/rattlekit-showcase-16x9-frame.png)
-- Vertical `9:16`: [repo MP4](./media/rattlekit-showcase-9x16.mp4) and [frame](./media/rattlekit-showcase-9x16-frame.png)
-
 ## Why This Repo Exists
 
 The source repos were close, but they were not a native mobile library:
